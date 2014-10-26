@@ -540,7 +540,9 @@ void debugfs_remove_recursive(struct dentry *dentry)
 
 	parent = dentry;
 	mutex_lock(&parent->d_inode->i_mutex);
-
+	list_for_each_entry_safe(child, next, &parent->d_subdirs, d_child) {
+		if (!debugfs_positive(child))
+			continue;
 	while (1) {
 		/*
 		 * When all dentries under "parent" has been removed,
@@ -587,6 +589,10 @@ void debugfs_remove_recursive(struct dentry *dentry)
 			break;
 		}
 		simple_release_fs(&debugfs_mount, &debugfs_mount_count);
+	if (child != dentry) {
+		next = list_entry(child->d_child.next, struct dentry,
+					d_child);
+		goto up;
 	}
 
 	parent = dentry->d_parent;
