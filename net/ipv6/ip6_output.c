@@ -924,6 +924,12 @@ static struct dst_entry *ip6_sk_dst_check(struct sock *sk,
 
         rt = (struct rt6_info *)dst;
 
+	if (dst->ops->family != AF_INET6) {
+		dst_release(dst);
+		return NULL;
+	}
+
+	rt = (struct rt6_info *)dst;
 	/* Yes, checking route validity in not connected
 	 * case is not very simple. Take into account,
 	 * that we do not support routing by source, TOS,
