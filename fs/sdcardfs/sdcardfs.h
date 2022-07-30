@@ -568,7 +568,7 @@ static inline int prepare_dir(const char *path_s, uid_t uid, gid_t gid, mode_t m
 		goto out_unlock;
 	}
 
-	err = vfs_mkdir2(parent.mnt, parent.dentry->d_inode, dent, mode);
+	err = vfs_mkdir(parent.dentry->d_inode, dent, mode);
 	if (err) {
 		if (err == -EEXIST)
 			err = 0;
@@ -579,7 +579,7 @@ static inline int prepare_dir(const char *path_s, uid_t uid, gid_t gid, mode_t m
 	attrs.ia_gid = gid;
 	attrs.ia_valid = ATTR_UID | ATTR_GID;
 	mutex_lock(&dent->d_inode->i_mutex);
-	notify_change2(parent.mnt, dent, &attrs);
+	notify_change(dent, &attrs);
 	mutex_unlock(&dent->d_inode->i_mutex);
 
 out_dput:
@@ -673,6 +673,7 @@ static inline bool qstr_case_eq(const struct qstr *q1, const struct qstr *q2)
 	return q1->len == q2->len && str_n_case_eq(q1->name, q2->name, q2->len);
 }
 
+#define QSTR_INIT(n, l)      { .name = n, .len = l }
 #define QSTR_LITERAL(string) QSTR_INIT(string, sizeof(string)-1)
 
 #endif	/* not _SDCARDFS_H_ */
