@@ -100,7 +100,7 @@ int fimc_is_sec_get_camid_from_hal(char *fw_name, char *setf_name)
 	int pixelSize;
 	int m_name;
 
-	if (read_data_from_file("/data/CameraID.txt", buf, 1, &pos) < 0) {
+	if (read_data_from_file("/data/misc/media/CameraID.txt", buf, 1, &pos) < 0) {
 		m_name = fimc_is_sec_get_module_name();
 		if (m_name == SENSOR_NAME_S5K6B2)
 			cam_id = CAMERA_SINGLE_FRONT;
