@@ -823,6 +823,31 @@ static int alarm_timer_set(struct k_itimer *timr, int flags,
 	return 0;
 }
 
+#if defined(CONFIG_RTC_ALARM_BOOT)
+#define BOOTALM_BIT_EN		0
+#define BOOTALM_BIT_YEAR	1
+#define BOOTALM_BIT_MONTH	5
+#define BOOTALM_BIT_DAY		7
+#define BOOTALM_BIT_HOUR	9
+#define BOOTALM_BIT_MIN		11
+#define BOOTALM_BIT_TOTAL	13
+
+int alarm_set_alarm_boot(char *alarm_data)
+{
+	struct rtc_wkalrm alm;
+	int ret;
+	char buf_ptr[BOOTALM_BIT_TOTAL + 1];
+
+	printk("alarm_set_alarm_boot: AlarmManager\n");
+
+		now = alarm_bases[timr->it.alarm.alarmtimer.type].gettime();
+		exp = ktime_add(now, exp);
+	}
+
+	alarm_start(&timr->it.alarm.alarmtimer, exp);
+	return 0;
+}
+
 /**
  * alarmtimer_nsleep_wakeup - Wakeup function for alarm_timer_nsleep
  * @alarm: ptr to alarm that fired
