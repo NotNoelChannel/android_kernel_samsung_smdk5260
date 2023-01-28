@@ -1217,7 +1217,7 @@ static unsigned long isolate_lru_pages(unsigned long nr_to_scan,
 
 		switch (__isolate_lru_page(page, mode, file)) {
 		case 0:
-			mem_cgroup_lru_del_list(page, lru);
+			mem_cgroup_lru_del(page);
 			list_move(&page->lru, dst);
 			nr_taken += hpage_nr_pages(page);
 			break;
