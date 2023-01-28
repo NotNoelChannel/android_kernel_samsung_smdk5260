@@ -2906,14 +2906,6 @@ static int sec_ac_get_property(struct power_supply *psy,
 		container_of(psy, struct sec_battery_info, psy_ac);
 
 
-	switch (psp) {
-	case POWER_SUPPLY_PROP_ONLINE:
-		if ((battery->health == POWER_SUPPLY_HEALTH_OVERVOLTAGE) ||
-				(battery->health == POWER_SUPPLY_HEALTH_UNDERVOLTAGE)) {
-			val->intval = 0;
-			return 0;
-		}
-
 	/* Set enable=1 only if the AC charger is connected */
 	switch (battery->cable_type) {
 	case POWER_SUPPLY_TYPE_MAINS:
@@ -2922,7 +2914,6 @@ static int sec_ac_get_property(struct power_supply *psy,
 	case POWER_SUPPLY_TYPE_UARTOFF:
 	case POWER_SUPPLY_TYPE_WPC:
 	case POWER_SUPPLY_TYPE_UNKNOWN:
-	case POWER_SUPPLY_TYPE_LAN_HUB:
 		val->intval = 1;
 		break;
 	default:
